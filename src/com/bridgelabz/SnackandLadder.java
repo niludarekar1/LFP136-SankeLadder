@@ -2,8 +2,6 @@ package com.bridgelabz;
 
 import java.util.Random;
 
-import java.util.Random;
-
 public class SnackandLadder {
 
     //Constants
@@ -13,7 +11,7 @@ public class SnackandLadder {
 
     //Declaring Variables for Players Position
     int playerPosition = 0;
-    int newPosition = 0;
+    int diceCount = 0;
 
     // Random Class Object for Generating Random Numbers
     Random randomNo = new Random();
@@ -27,6 +25,11 @@ public class SnackandLadder {
     //Method to Roll the Die and Get No between 1 to 6
     private int rollDie() {
         int dieNo = randomNo.nextInt(6)+1;
+
+        //Incrementing the Dice Count on each die roll
+        diceCount++;
+        System.out.println("Dice Count : "+diceCount);
+
         return dieNo;
     }
 
