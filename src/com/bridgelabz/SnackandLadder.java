@@ -1,28 +1,34 @@
 package com.bridgelabz;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class SnackandLadder {
 
-    //Constants
+    //Constants for Moves
     private static final int IS_NO_PLAY = 0;
     private static final int IS_LADDER = 1;
     private static final int IS_SNAKE = 2;
 
+    //Scanner Object for User Input
+    Scanner sc = new Scanner(System.in);
+
     //Declaring Variables for Players Position
     int playerPosition = 0;
     int diceCount = 0;
+    int dieNo = 0;
+    static int player1Play = 1;
 
     // Random Class Object for Generating Random Numbers
     Random randomNo = new Random();
 
     //Method to Show Player Current Position
-    private void showPosition() {
+    private void showPosition(int playerNo) {
         //Displaying Player Position
-        System.out.println("Player Starting Position : "+ playerPosition);
+        System.out.println("Player "+playerNo+" Position : "+ playerPosition);
     }
 
-    //Method to Roll the Die and Get No between 1 to 6
+    //Method to Roll the Die and Get No. between 1 and 6
     private int rollDie() {
         int dieNo = randomNo.nextInt(6)+1;
 
@@ -31,6 +37,19 @@ public class SnackandLadder {
         System.out.println("Dice Count : "+diceCount);
 
         return dieNo;
+    }
+
+    //Method to Play the Game by Rolling Die
+    private void playGame(int playerNo) {
+        System.out.println("Player "+playerNo+" Chance :\nPress 1 to Roll the Dice :");
+        int choice = sc.nextInt();
+        //Show Die Rolling No
+        dieNo = rollDie();
+        System.out.println("Die Number for Player "+playerNo+": "+ dieNo);
+
+        //Player going for Options
+        optionPlay(dieNo);
+        showPosition(playerNo);
     }
 
     //Method to Check for Option
@@ -62,25 +81,62 @@ public class SnackandLadder {
         }
     }
 
+    //Make Toss for Player Chance
+    private static void flipToss() {
+        Random tossValue = new Random();
+        int toss = tossValue.nextInt(2)+1;
+        if(toss == 1) {
+            player1Play = 1;
+            System.out.println("Player 1 Won the Toss.");
+        } else {
+            player1Play = 0;
+            System.out.println("Player 2 Won the Toss.");
+        }
+    }
+
+    //Method for Toss to Player Chance
+    private static void playerChance() {
+        if(player1Play == 1) {
+            player1Play = 0;
+        } else {
+            player1Play = 1;
+        }
+    }
+
+    //Method to check for Win
+    private boolean checkWin() {
+        if(playerPosition == 100) {
+            return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
+
+        int checkLadder =0;
+
         //Displaying Welcome Message
         System.out.println("Welcome to Snake and Ladder Simulator Problem Developed by Nilesh Darekar.");
 
         //Creating Object for Player
         SnackandLadder player1 = new SnackandLadder();
+        SnackandLadder player2 = new SnackandLadder();
 
         //Showing Player Position
-        player1.showPosition();
+        player2.showPosition(1);
+        player1.showPosition(2);
 
-        //Iterating upto Player got Position 100
-        while( player1.playerPosition != 100) {
-            //Show Die Rolling No
-            int dieNo = player1.rollDie();
-            System.out.println("Die Number for Player : "+ dieNo);
+        //Flipping the toss for getting whcih player play first
+        flipToss();
 
-            //Player going for Options
-            player1.optionPlay(dieNo);
-            player1.showPosition();
+        //Iterating unto Player got Position 100
+        while( !player1.checkWin() && !player2.checkWin()) {
+            if(player1Play ==1) {
+                player1.playGame(1);
+            } else {
+                player2.playGame(2);
+            }
+            playerChance();
         }
     }
 }
